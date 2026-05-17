@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAtlasData } from "./useAtlasData";
 import Sidebar from "./Sidebar";
 import AtlasPage from "./pages/AtlasPage";
+import ExplorerPage from "./pages/ExplorerPage";
 import styles from "./App.module.css";
 
 export default function App() {
@@ -34,7 +35,10 @@ export default function App() {
         {page === "atlas" && (
           <AtlasPage districts={districts} geojson={geojson} />
         )}
-        {page !== "atlas" && (
+        {page === "explorer" && (
+          <ExplorerPage districts={districts} />
+        )}
+        {page !== "atlas" && page !== "explorer" && (
           <div className={styles.placeholder}>
             <h1>{page}</h1>
             <p style={{ color: "var(--text-muted)" }}>Coming soon</p>

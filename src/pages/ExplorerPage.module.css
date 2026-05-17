@@ -46,6 +46,12 @@
     margin-bottom: 20px;
 }
 
+.badgeRow {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
 .tierBadge {
     display: inline-block;
     padding: 4px 14px;
@@ -55,7 +61,6 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: white;
-    margin-bottom: 10px;
 }
 
 .districtName {
@@ -71,18 +76,48 @@
     color: var(--text-muted);
 }
 
+.twoCol {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 24px;
+    margin-bottom: 24px;
+    align-items: start;
+}
+
+.leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.sectionLabel {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    margin-top: 4px;
+}
+
 .metricsRow {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .metricCard {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -90,13 +125,13 @@
 
 .metricVal {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--accent);
 }
 
 .metricKey {
-    font-size: 11px;
+    font-size: 10px;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -107,10 +142,10 @@
     border: 1px solid var(--border);
     border-left: 4px solid var(--accent);
     border-radius: 10px;
-    padding: 14px 20px;
-    font-size: 14px;
+    padding: 12px 16px;
+    font-size: 13px;
     color: var(--text-muted);
-    margin-bottom: 24px;
+    margin-bottom: 8px;
     line-height: 1.6;
 }
 
@@ -118,17 +153,67 @@
     color: var(--text);
 }
 
-.charts {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.independenceBox {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: rgba(78, 205, 196, 0.05);
+    border: 1px solid rgba(78, 205, 196, 0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+}
+
+.independenceIcon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.independenceHead {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 4px;
+}
+
+.independenceBody {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+.gaugeWrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.gaugeLabel {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
 }
 
 .chartCard {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
+    padding: 20px;
+}
+
+.chartCardFull {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
     padding: 24px;
+    margin-bottom: 24px;
 }
 
 .chartTitle {

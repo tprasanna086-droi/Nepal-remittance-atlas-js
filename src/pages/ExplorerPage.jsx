@@ -76,36 +76,7 @@ function RVIGauge({ score, tier }) {
     );
 }
 
-return (
-    <div className={styles.gaugeWrap}>
-        <svg width="240" height="130" viewBox="0 0 240 130">
-            <path
-                d={`M ${startX} ${startY} A ${r} ${r} 0 0 1 ${endX} ${endY}`}
-                fill="none"
-                stroke="#2E3248"
-                strokeWidth="16"
-                strokeLinecap="round"
-            />
-            <path
-                d={`M ${startX} ${startY} A ${r} ${r} 0 ${largeArc} 1 ${fillEndX} ${fillEndY}`}
-                fill="none"
-                stroke={color}
-                strokeWidth="16"
-                strokeLinecap="round"
-            />
-            <circle cx={needleX} cy={needleY} r="5" fill="white" />
-            <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fontSize="28" fontWeight="800" fontFamily="Playfair Display">
-                {score.toFixed(1)}
-            </text>
-            <text x={cx} y={cy + 16} textAnchor="middle" fill={color} fontSize="12" fontWeight="700">
-                {tier} Vulnerability
-            </text>
-            <text x={startX - 6} y={cy + 20} textAnchor="middle" fill="#8A8FA8" fontSize="10">0</text>
-            <text x={endX + 6} y={cy + 20} textAnchor="middle" fill="#8A8FA8" fontSize="10">100</text>
-        </svg>
-        <p className={styles.gaugeLabel}>RVI Score — Structural Vulnerability</p>
-    </div>
-);
+
 
 
 export default function ExplorerPage({ districts }) {

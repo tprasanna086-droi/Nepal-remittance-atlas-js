@@ -32,7 +32,8 @@ export default function ProvincePage({ districts }) {
             avgRDI: ds.reduce((s, d) => s + d.rdi_score, 0) / ds.length,
             avgMig: ds.reduce((s, d) => s + d.absent_hh_rate, 0) / ds.length,
             avgEdu: ds.reduce((s, d) => s + d.pct_secondary_or_higher, 0) / ds.length,
-            highCount: ds.filter((d) => d.rdi_tier === "High" || d.rdi_tier === "Critical").length,
+            highCount: ds.filter((d) => d.rvi_final_tier === "High" || d.rvi_final_tier === "Critical").length,
+            avgRVI: ds.reduce((s, d) => s + d.rvi_final_score, 0) / ds.length,
             totalAbsent: ds.reduce((s, d) => s + d.absent_population, 0),
             districtCount: ds.length,
             districts: ds,
@@ -70,23 +71,17 @@ export default function ProvincePage({ districts }) {
                             />
                             <h3 className={styles.provinceName}>{p.province}</h3>
                         </div>
-                        <div className={styles.provinceStats}>
-                            <div className={styles.provinceStat}>
-                                <span className={styles.provinceVal}>
-                                    {p.avgRDI.toFixed(1)}
-                                </span>
-                                <span className={styles.provinceKey}>Avg RDI</span>
-                            </div>
-                            <div className={styles.provinceStat}>
-                                <span className={styles.provinceVal}>
-                                    {p.avgMig.toFixed(1)}%
-                                </span>
-                                <span className={styles.provinceKey}>Avg Migration</span>
-                            </div>
-                            <div className={styles.provinceStat}>
-                                <span className={styles.provinceVal}>{p.highCount}</span>
-                                <span className={styles.provinceKey}>High/Critical</span>
-                            </div>
+                        <div className={styles.provinceStat}>
+                            <span className={styles.provinceVal}>{p.avgRDI.toFixed(1)}</span>
+                            <span className={styles.provinceKey}>Avg RDI</span>
+                        </div>
+                        <div className={styles.provinceStat}>
+                            <span className={styles.provinceVal}>{p.avgRVI.toFixed(1)}</span>
+                            <span className={styles.provinceKey}>Avg RVI</span>
+                        </div>
+                        <div className={styles.provinceStat}>
+                            <span className={styles.provinceVal}>{p.highCount}</span>
+                            <span className={styles.provinceKey}>High/Critical RVI</span>
                         </div>
                     </div>
                 ))}
@@ -160,6 +155,44 @@ export default function ProvincePage({ districts }) {
                                 formatter={(v) => [v.toFixed(1) + "%", "Avg Migration"]}
                             />
                             <Bar dataKey="avgMig" radius={[6, 6, 0, 0]}>
+                                {provinceStats.map((p) => (
+                                    <Cell
+                                        key={p.province}
+                                        fill={PROVINCE_COLORS[p.province] || "#888"}
+                                    />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className={styles.chartCard}>
+                    <h3 className={styles.chartTitle}>Average RVI Score by Province</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart
+                            data={provinceStats}
+                            margin={{ left: 0, right: 20, top: 8, bottom: 8 }}
+                        >
+                            <XAxis
+                                dataKey="province"
+                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
+                                axisLine={{ stroke: "#2E3248" }}
+                                tickLine={false}
+                            />
+                            <YAxis
+                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
+                                axisLine={false}
+                                tickLine={false}
+                            />
+                            <Tooltip
+                                contentStyle={{
+                                    background: "#1A1D27",
+                                    border: "1px solid #2E3248",
+                                    borderRadius: 8,
+                                    color: "#F0F0F0",
+                                }}
+                                formatter={(v) => [v.toFixed(1), "Avg RVI"]}
+                            />
+                            <Bar dataKey="avgRVI" radius={[6, 6, 0, 0]}>
                                 {provinceStats.map((p) => (
                                     <Cell
                                         key={p.province}

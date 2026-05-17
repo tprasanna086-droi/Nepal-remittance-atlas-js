@@ -3,6 +3,7 @@ import { useAtlasData } from "./useAtlasData";
 import Sidebar from "./Sidebar";
 import AtlasPage from "./pages/AtlasPage";
 import ExplorerPage from "./pages/ExplorerPage";
+import ProvincePage from "./pages/ProvincePage";
 import styles from "./App.module.css";
 
 export default function App() {
@@ -38,7 +39,10 @@ export default function App() {
         {page === "explorer" && (
           <ExplorerPage districts={districts} />
         )}
-        {page !== "atlas" && page !== "explorer" && (
+        {page === "province" && (
+          <ProvincePage districts={districts} />
+        )}
+        {page !== "atlas" && page !== "explorer" && page !== "province" && (
           <div className={styles.placeholder}>
             <h1>{page}</h1>
             <p style={{ color: "var(--text-muted)" }}>Coming soon</p>

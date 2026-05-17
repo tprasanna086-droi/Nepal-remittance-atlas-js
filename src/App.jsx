@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import AtlasPage from "./pages/AtlasPage";
 import ExplorerPage from "./pages/ExplorerPage";
 import ProvincePage from "./pages/ProvincePage";
+import MigrationPage from "./pages/MigrationPage";
 import styles from "./App.module.css";
 
 export default function App() {
@@ -42,10 +43,15 @@ export default function App() {
         {page === "province" && (
           <ProvincePage districts={districts} />
         )}
-        {page !== "atlas" && page !== "explorer" && page !== "province" && (
+        {page === "migration" && (
+          <MigrationPage districts={districts} />
+        )}
+        {page === "research" && (
           <div className={styles.placeholder}>
-            <h1>{page}</h1>
-            <p style={{ color: "var(--text-muted)" }}>Coming soon</p>
+            <h1 style={{ fontFamily: "var(--font-display)", color: "var(--accent)" }}>
+              The Research
+            </h1>
+            <p style={{ color: "var(--text-muted)" }}>Coming next</p>
           </div>
         )}
       </main>

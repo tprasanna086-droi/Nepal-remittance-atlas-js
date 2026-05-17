@@ -40,10 +40,9 @@ function RVIGauge({ score, tier }) {
     const endY = cy + r * Math.sin(toRad(0));
     const fillEndX = cx + r * Math.cos(toRad(angle));
     const fillEndY = cy + r * Math.sin(toRad(angle));
-    const largeArc = pct > 50 ? 1 : 0;
+    const largeArc = angle > -90 ? 1 : 0;
     const needleX = cx + (r - 12) * Math.cos(toRad(angle));
     const needleY = cy + (r - 12) * Math.sin(toRad(angle));
-
     return (
         <div className={styles.gaugeWrap}>
             <svg width="260" height="150" viewBox="0 0 260 150">

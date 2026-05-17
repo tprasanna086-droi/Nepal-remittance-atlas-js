@@ -5,6 +5,7 @@ import AtlasPage from "./pages/AtlasPage";
 import ExplorerPage from "./pages/ExplorerPage";
 import ProvincePage from "./pages/ProvincePage";
 import MigrationPage from "./pages/MigrationPage";
+import ResearchPage from "./pages/ResearchPage";
 import styles from "./App.module.css";
 
 export default function App() {
@@ -47,12 +48,7 @@ export default function App() {
           <MigrationPage districts={districts} />
         )}
         {page === "research" && (
-          <div className={styles.placeholder}>
-            <h1 style={{ fontFamily: "var(--font-display)", color: "var(--accent)" }}>
-              The Research
-            </h1>
-            <p style={{ color: "var(--text-muted)" }}>Coming next</p>
-          </div>
+          <ResearchPage districts={districts} />
         )}
       </main>
     </div>

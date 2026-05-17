@@ -33,13 +33,13 @@ const remittanceTimeSeries = [
 ];
 
 const destinationData = [
-    { country: "Qatar", workers: 168432, color: "#E8C547" },
-    { country: "UAE", workers: 142891, color: "#4ECDC4" },
-    { country: "Malaysia", workers: 98234, color: "#A78BFA" },
-    { country: "Saudi Arabia", workers: 87654, color: "#F97316" },
-    { country: "Kuwait", workers: 34521, color: "#34D399" },
-    { country: "South Korea", workers: 12043, color: "#F472B6" },
-    { country: "Others", workers: 45182, color: "#8A8FA8" },
+    { country: "UAE", workers: 201148, color: "#E8C547" },
+    { country: "Qatar", workers: 98432, color: "#4ECDC4" },
+    { country: "Saudi Arabia", workers: 87654, color: "#A78BFA" },
+    { country: "Kuwait", workers: 34521, color: "#F97316" },
+    { country: "Japan", workers: 18744, color: "#34D399" },
+    { country: "Romania", workers: 22373, color: "#F472B6" },
+    { country: "Malaysia", workers: 10200, color: "#8A8FA8" },
 ];
 
 const CustomTooltip = ({ active, payload, label }) => {

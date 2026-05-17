@@ -1,0 +1,133 @@
+.sidebar {
+    width: 260px;
+    min-width: 260px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 28px 16px;
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+}
+
+.brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 8px;
+}
+
+.brandTop {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.brandAccent {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1.2;
+}
+
+.brandSub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+    line-height: 1.5;
+}
+
+.divider {
+    height: 1px;
+    background: var(--border);
+    margin: 20px 0;
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.navBtn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    transition: all 0.18s ease;
+    text-align: left;
+    width: 100%;
+}
+
+.navBtn:hover {
+    background: var(--surface2);
+    color: var(--text);
+}
+
+.navBtn.active {
+    background: var(--accent);
+    color: #0F1117;
+    font-weight: 600;
+}
+
+.navIcon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+.navLabel {
+    flex: 1;
+}
+
+.footer {
+    padding: 0 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.footerName {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.footerSub {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+.footerLink {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 500;
+    margin-top: 4px;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
+}
+
+.navBtnActive {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0F1117;
+    background: var(--accent);
+    text-align: left;
+    width: 100%;
+}

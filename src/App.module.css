@@ -1,0 +1,63 @@
+.shell {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    background: var(--bg);
+}
+
+.loading {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+}
+
+.loadingInner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.loadingFlag {
+    font-size: 48px;
+    animation: pulse 1.4s ease-in-out infinite;
+}
+
+.loadingText {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+}
+
+.placeholder {
+    padding: 60px;
+}
+
+.placeholder h1 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--accent);
+    text-transform: capitalize;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.95);
+    }
+}

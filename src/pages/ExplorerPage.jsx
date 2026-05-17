@@ -30,45 +30,54 @@ const RVI_COLORS = {
 
 function RVIGauge({ score, tier }) {
     const pct = Math.min(Math.max(score, 0), 100);
-    const angle = -180 + (pct / 100) * 180;
     const color = RVI_COLORS[tier] || "#9B59B6";
-    const cx = 130, cy = 120, r = 90;
+    const cx = 130, cy = 115, r = 90;
+
     const toRad = (deg) => (deg * Math.PI) / 180;
-    const startX = cx + r * Math.cos(toRad(-180));
-    const startY = cy + r * Math.sin(toRad(-180));
-    const endX = cx + r * Math.cos(toRad(0));
-    const endY = cy + r * Math.sin(toRad(0));
-    const fillEndX = cx + r * Math.cos(toRad(angle));
-    const fillEndY = cy + r * Math.sin(toRad(angle));
-    const largeArc = angle > -90 ? 1 : 0;
-    const needleX = cx + (r - 12) * Math.cos(toRad(angle));
-    const needleY = cy + (r - 12) * Math.sin(toRad(angle));
+
+    const getPoint = (angleDeg) => ({
+        x: cx + r * Math.cos(toRad(angleDeg)),
+        y: cy + r * Math.sin(toRad(angleDeg)),
+    });
+
+    const start = getPoint(180);
+    const end = getPoint(0);
+    const fillAngle = 180 - (pct / 100) * 180;
+    const fill = getPoint(fillAngle);
+    const largeArc = pct > 50 ? 1 : 0;
+
+    const needleAngle = 180 - (pct / 100) * 180;
+    const needle = {
+        x: cx + (r - 15) * Math.cos(toRad(needleAngle)),
+        y: cy + (r - 15) * Math.sin(toRad(needleAngle)),
+    };
+
     return (
         <div className={styles.gaugeWrap}>
-            <svg width="260" height="150" viewBox="0 0 260 150">
+            <svg width="260" height="140" viewBox="0 0 260 140">
                 <path
-                    d={`M ${startX} ${startY} A ${r} ${r} 0 0 1 ${endX} ${endY}`}
+                    d={`M ${start.x} ${start.y} A ${r} ${r} 0 0 1 ${end.x} ${end.y}`}
                     fill="none"
                     stroke="#2E3248"
                     strokeWidth="18"
                     strokeLinecap="round"
                 />
                 <path
-                    d={`M ${startX} ${startY} A ${r} ${r} 0 ${largeArc} 1 ${fillEndX} ${fillEndY}`}
+                    d={`M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 1 ${fill.x} ${fill.y}`}
                     fill="none"
                     stroke={color}
                     strokeWidth="18"
                     strokeLinecap="round"
                 />
-                <circle cx={needleX} cy={needleY} r="6" fill="white" />
-                <text x={cx} y={cy - 10} textAnchor="middle" fill="white" fontSize="32" fontWeight="800" fontFamily="Playfair Display, serif">
+                <circle cx={needle.x} cy={needle.y} r="6" fill="white" />
+                <text x={cx} y={cy - 8} textAnchor="middle" fill="white" fontSize="30" fontWeight="800" fontFamily="Playfair Display, serif">
                     {score.toFixed(1)}
                 </text>
-                <text x={cx} y={cy + 18} textAnchor="middle" fill={color} fontSize="13" fontWeight="700">
+                <text x={cx} y={cy + 16} textAnchor="middle" fill={color} fontSize="12" fontWeight="700">
                     {tier} Vulnerability
                 </text>
-                <text x={startX + 4} y={cy + 28} textAnchor="middle" fill="#8A8FA8" fontSize="11">0</text>
-                <text x={endX - 4} y={cy + 28} textAnchor="middle" fill="#8A8FA8" fontSize="11">100</text>
+                <text x={start.x + 8} y={cy + 26} textAnchor="middle" fill="#8A8FA8" fontSize="11">0</text>
+                <text x={end.x - 8} y={cy + 26} textAnchor="middle" fill="#8A8FA8" fontSize="11">100</text>
             </svg>
             <p className={styles.gaugeLabel}>RVI Score — Structural Vulnerability</p>
         </div>

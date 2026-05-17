@@ -31,6 +31,9 @@ export function useAtlasData() {
                     pct_secondary_or_higher: Number(d.pct_secondary_or_higher) || 0,
                     literacy_rate_real: Number(d.literacy_rate_real) || 0,
                     mpi_headcount_proxy: Number(d.mpi_headcount_proxy) || 0,
+                    rvi_final_score: Number(d.rvi_final_score) || 0,
+                    rvi_final_tier: String(d.rvi_final_tier || "Low").trim(),
+                    rvi_final_rank: Number(d.rvi_final_rank) || 0,
                     total_households: Number(d.total_households) || 0,
                 }));
 

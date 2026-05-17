@@ -243,3 +243,39 @@
     border-radius: 8px !important;
     padding: 8px 12px !important;
 }
+
+.mapToggle {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.toggleBtn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: var(--font-body);
+}
+
+.toggleBtn:hover {
+    background: var(--surface2);
+    color: var(--text);
+}
+
+.toggleBtnActive {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0F1117;
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    cursor: pointer;
+    font-family: var(--font-body);
+}

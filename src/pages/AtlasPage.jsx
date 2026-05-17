@@ -1,28 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./AtlasPage.module.css";
 
-const TIER_COLORS = {
+const RDI_COLORS = {
     Critical: "#C94040",
     High: "#E05C5C",
     Moderate: "#E8A84A",
     Low: "#4ECDC4",
 };
 
-function getColor(score) {
-    if (score >= 60) return TIER_COLORS.Critical;
-    if (score >= 45) return TIER_COLORS.High;
-    if (score >= 25) return TIER_COLORS.Moderate;
-    return TIER_COLORS.Low;
+const RVI_COLORS = {
+    Critical: "#7B2D8B",
+    High: "#9B59B6",
+    Moderate: "#F4A460",
+    Low: "#3CB371",
+};
+
+function getColor(score, tier, mode) {
+    const colors = mode === "rvi" ? RVI_COLORS : RDI_COLORS;
+    return colors[tier] || colors.Low;
 }
 
 export default function AtlasPage({ districts, geojson }) {
     const mapRef = useRef(null);
     const mapInstanceRef = useRef(null);
     const [selected, setSelected] = useState(null);
+    const [mapMode, setMapMode] = useState("rdi");
 
     useEffect(() => {
         if (!geojson || !districts.length) return;
-        if (mapInstanceRef.current) return;
+        if (mapInstanceRef.current) {
+            mapInstanceRef.current.remove();
+            mapInstanceRef.current = null;
+        }
 
         import("leaflet").then((L) => {
             const map = L.map(mapRef.current, {
@@ -61,10 +70,19 @@ export default function AtlasPage({ districts, geojson }) {
                     );
 
                     const data = match ? districtMap[match] : null;
-                    const score = data ? data.rdi_score : 0;
+                    const tier = data
+                        ? mapMode === "rvi"
+                            ? data.rvi_final_tier
+                            : data.rdi_tier
+                        : "Low";
+                    const score = data
+                        ? mapMode === "rvi"
+                            ? data.rvi_final_score
+                            : data.rdi_score
+                        : 0;
 
                     return {
-                        fillColor: getColor(score),
+                        fillColor: getColor(score, tier, mapMode),
                         fillOpacity: 0.75,
                         color: "#0F1117",
                         weight: 1,
@@ -116,10 +134,14 @@ export default function AtlasPage({ districts, geojson }) {
                 mapInstanceRef.current = null;
             }
         };
-    }, [geojson, districts]);
+    }, [geojson, districts, mapMode]);
 
     const top5 = [...districts]
-        .sort((a, b) => b.rdi_score - a.rdi_score)
+        .sort((a, b) =>
+            mapMode === "rvi"
+                ? b.rvi_final_score - a.rvi_final_score
+                : b.rdi_score - a.rdi_score
+        )
         .slice(0, 5);
 
     const totalAbsent = districts.reduce((s, d) => s + d.absent_population, 0);
@@ -153,12 +175,25 @@ export default function AtlasPage({ districts, geojson }) {
                     <span className={styles.statLabel}>Total Absent Population</span>
                 </div>
             </div>
-
+            <div className={styles.mapToggle}>
+                <button
+                    className={mapMode === "rdi" ? styles.toggleBtnActive : styles.toggleBtn}
+                    onClick={() => setMapMode("rdi")}
+                >
+                    RDI — Migration Intensity
+                </button>
+                <button
+                    className={mapMode === "rvi" ? styles.toggleBtnActive : styles.toggleBtn}
+                    onClick={() => setMapMode("rvi")}
+                >
+                    RVI — Structural Vulnerability
+                </button>
+            </div>
             <div className={styles.body}>
                 <div className={styles.mapWrap}>
                     <div ref={mapRef} className={styles.map} />
                     <div className={styles.legend}>
-                        {Object.entries(TIER_COLORS).map(([tier, color]) => (
+                        {Object.entries(mapMode === "rvi" ? RVI_COLORS : RDI_COLORS).map(([tier, color]) => (
                             <div key={tier} className={styles.legendItem}>
                                 <span className={styles.legendDot} style={{ background: color }} />
                                 <span className={styles.legendLabel}>{tier}</span>
@@ -172,7 +207,7 @@ export default function AtlasPage({ districts, geojson }) {
                         <div className={styles.infoCard}>
                             <div
                                 className={styles.infoTier}
-                                style={{ background: TIER_COLORS[selected.rdi_tier] }}
+                                style={{ background: RDI_COLORS[selected.rdi_tier] }}
                             >
                                 {selected.rdi_tier} Dependency
                             </div>
@@ -180,11 +215,15 @@ export default function AtlasPage({ districts, geojson }) {
                             <p className={styles.infoProvince}>{selected.province} Province</p>
                             <div className={styles.infoGrid}>
                                 <div className={styles.infoStat}>
-                                    <span className={styles.infoVal}>{selected.rdi_score.toFixed(1)}</span>
-                                    <span className={styles.infoKey}>RDI Score</span>
+                                    <span className={styles.infoVal}>
+                                        {mapMode === "rvi" ? selected.rvi_final_score.toFixed(1) : selected.rdi_score.toFixed(1)}
+                                    </span>
+                                    <span className={styles.infoKey}>{mapMode === "rvi" ? "RVI Score" : "RDI Score"}</span>
                                 </div>
                                 <div className={styles.infoStat}>
-                                    <span className={styles.infoVal}>#{selected.rdi_rank}</span>
+                                    <span className={styles.infoVal}>
+                                        #{mapMode === "rvi" ? selected.rvi_final_rank : selected.rdi_rank}
+                                    </span>
                                     <span className={styles.infoKey}>National Rank</span>
                                 </div>
                                 <div className={styles.infoStat}>
@@ -205,16 +244,18 @@ export default function AtlasPage({ districts, geojson }) {
                     )}
 
                     <div className={styles.top5}>
-                        <h3 className={styles.top5Title}>Top 5 Most Dependent</h3>
+                        <h3 className={styles.top5Title}>
+                            Top 5 — {mapMode === "rvi" ? "Most Vulnerable (RVI)" : "Most Dependent (RDI)"}
+                        </h3>
                         {top5.map((d, i) => (
                             <div key={d.district} className={styles.top5Row}>
                                 <span className={styles.top5Rank}>#{i + 1}</span>
                                 <span className={styles.top5Name}>{d.district}</span>
                                 <span
                                     className={styles.top5Score}
-                                    style={{ color: TIER_COLORS[d.rdi_tier] }}
+                                    style={{ color: mapMode === "rvi" ? RVI_COLORS[d.rvi_final_tier] : RDI_COLORS[d.rdi_tier] }}
                                 >
-                                    {d.rdi_score.toFixed(1)}
+                                    {mapMode === "rvi" ? d.rvi_final_score.toFixed(1) : d.rdi_score.toFixed(1)}
                                 </span>
                             </div>
                         ))}

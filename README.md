@@ -21,8 +21,11 @@ Toggle between RDI (Migration Dependency Index) and RVI (Remittance Vulnerabilit
 ## Screenshots
 
 ![Home Page](screenshots/home.png)
+
 ![Atlas Map](screenshots/atlas.png)
+
 ![District Explorer](screenshots/explorer.png)
+
 ![Research Page](screenshots/research.png)
 
 ## Pages

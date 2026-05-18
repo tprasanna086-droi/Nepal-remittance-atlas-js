@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAtlasData } from "./useAtlasData";
-import Sidebar from "./Sidebar";
+import TopNav from "./TopNav";
+import HomePage from "./pages/HomePage";
 import AtlasPage from "./pages/AtlasPage";
 import ExplorerPage from "./pages/ExplorerPage";
 import ProvincePage from "./pages/ProvincePage";
@@ -9,7 +10,7 @@ import ResearchPage from "./pages/ResearchPage";
 import styles from "./App.module.css";
 
 export default function App() {
-  const [page, setPage] = useState("atlas");
+  const [page, setPage] = useState("home");
   const { districts, geojson, loading, error } = useAtlasData();
 
   if (loading) {
@@ -33,8 +34,11 @@ export default function App() {
 
   return (
     <div className={styles.shell}>
-      <Sidebar page={page} setPage={setPage} />
+      <TopNav page={page} setPage={setPage} districts={districts} />
       <main className={styles.main}>
+        {page === "home" && (
+          <HomePage setPage={setPage} />
+        )}
         {page === "atlas" && (
           <AtlasPage districts={districts} geojson={geojson} />
         )}

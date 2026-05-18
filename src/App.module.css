@@ -1,7 +1,7 @@
 .shell {
     display: flex;
-    height: 100vh;
-    overflow: hidden;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .main {
@@ -35,17 +35,6 @@
     font-size: 20px;
     color: var(--text-muted);
     letter-spacing: 0.05em;
-}
-
-.placeholder {
-    padding: 60px;
-}
-
-.placeholder h1 {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    color: var(--accent);
-    text-transform: capitalize;
 }
 
 @keyframes pulse {

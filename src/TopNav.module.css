@@ -1,0 +1,342 @@
+.nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-bottom: 1.6px solid #000000;
+    width: 100%;
+    overflow: visible;
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    height: 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Logo */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+}
+
+.logoMark {
+    width: 40px;
+    height: 40px;
+    background: #000000;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-body);
+    font-weight: 900;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.logoText {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.logoTitle {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 18px;
+    color: #000000;
+    text-transform: uppercase;
+    letter-spacing: -0.45px;
+    line-height: 1;
+}
+
+.logoSub {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #666666;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    line-height: 1;
+    margin-top: 4px;
+}
+
+/* Nav pill */
+.navPill {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.navBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 8px;
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: #666666;
+    cursor: pointer;
+    transition: color 0.15s;
+    white-space: nowrap;
+}
+
+.navBtn:hover {
+    color: #000000;
+}
+
+.navBtnActive {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 40px;
+    padding: 0 20px;
+    border-radius: 8px;
+    border: none;
+    background: #000000;
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    white-space: nowrap;
+}
+
+/* Dashboard dropdown */
+.dropdownWrapper {
+    position: relative;
+    z-index: 999;
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    background: #ffffff;
+    border: 1.6px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 6px;
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 200;
+}
+
+.dropdownItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #333333;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s;
+}
+
+.dropdownItem:hover {
+    background: #f5f5f5;
+}
+
+.dropdownItemActive {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 10px 16px;
+    border: none;
+    background: #f5f5f5;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #000000;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+/* Right actions */
+.rightActions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.iconBtn {
+    width: 40px;
+    height: 40px;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #333333;
+    transition: background 0.15s;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+.iconBtn:hover {
+    background: #e0e0e0;
+}
+
+/* Search */
+.searchWrapper {
+    position: relative;
+}
+
+.searchExpanded {
+    position: relative;
+}
+
+.searchInput {
+    height: 40px;
+    width: 280px;
+    padding: 0 16px;
+    border: 1.6px solid #000000;
+    border-radius: 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #000000;
+    background: #ffffff;
+    outline: none;
+}
+
+.searchInput::placeholder {
+    color: #999999;
+}
+
+.searchDropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1.6px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 300;
+}
+
+.searchResult {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.15s;
+}
+
+.searchResult:hover {
+    background: #f5f5f5;
+}
+
+.searchResultName {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+}
+
+.searchResultSub {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: #666666;
+}
+
+.searchNoResult {
+    padding: 10px 16px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: #666666;
+}
+
+/* Sub Nav */
+.subNav {
+    background: #ffffff;
+    border-bottom: 1.6px solid #e0e0e0;
+    width: 100%;
+}
+
+.subNavInner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 4px;
+}
+
+.subNavBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: #666666;
+    cursor: pointer;
+    border-bottom: 2px solid #e0e0e0;
+    transition: color 0.15s;
+    white-space: nowrap;
+    margin-bottom: -1.6px;
+}
+
+.subNavBtn:hover {
+    color: #000000;
+}
+
+.subNavBtnActive {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 20px;
+    border: none;
+    background: none;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: #000000;
+    cursor: pointer;
+    border-bottom: 2px solid #000000;
+    white-space: nowrap;
+    margin-bottom: -1.6px;
+}
+
+.subNavSub {
+    font-size: 11px;
+    font-weight: 400;
+    color: #999999;
+    margin-left: 2px;
+}
+
+.subNavBtnActive .subNavSub {
+    color: #666666;
+}

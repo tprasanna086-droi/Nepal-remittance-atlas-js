@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
     RadarChart,
     Radar,
@@ -31,50 +31,43 @@ const RVI_COLORS = {
 function RVIGauge({ score, tier }) {
     const pct = Math.min(Math.max(score, 0), 100);
     const color = RVI_COLORS[tier] || "#9B59B6";
-    const rotation = -90 + (pct / 100) * 180;
 
     return (
         <div className={styles.gaugeWrap}>
-            <div className={styles.gaugeSvgWrap}>
-                <svg width="240" height="130" viewBox="0 0 240 130">
-                    <path
-                        d="M 20 120 A 100 100 0 0 1 220 120"
-                        fill="none"
-                        stroke="#2E3248"
-                        strokeWidth="18"
-                        strokeLinecap="round"
-                    />
-                    <path
-                        d="M 20 120 A 100 100 0 0 1 220 120"
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="18"
-                        strokeLinecap="round"
-                        strokeDasharray={`${(pct / 100) * 314} 314`}
-                    />
-                    <text x="120" y="95" textAnchor="middle" fill="white" fontSize="30" fontWeight="800" fontFamily="Playfair Display, serif">
-                        {score.toFixed(1)}
-                    </text>
-                    <text x="120" y="118" textAnchor="middle" fill={color} fontSize="12" fontWeight="700">
-                        {tier} Vulnerability
-                    </text>
-                    <text x="20" y="138" textAnchor="middle" fill="#8A8FA8" fontSize="11">0</text>
-                    <text x="220" y="138" textAnchor="middle" fill="#8A8FA8" fontSize="11">100</text>
-                </svg>
-            </div>
+            <svg width="240" height="130" viewBox="0 0 240 130">
+                <path d="M 20 120 A 100 100 0 0 1 220 120" fill="none" stroke="#e0e0e0" strokeWidth="18" strokeLinecap="round" />
+                <path d="M 20 120 A 100 100 0 0 1 220 120" fill="none" stroke={color} strokeWidth="18" strokeLinecap="round" strokeDasharray={`${(pct / 100) * 314} 314`} />
+                <text x="120" y="95" textAnchor="middle" fill="#000000" fontSize="30" fontWeight="800" fontFamily="Playfair Display, serif">
+                    {score.toFixed(1)}
+                </text>
+                <text x="120" y="118" textAnchor="middle" fill={color} fontSize="12" fontWeight="700">
+                    {tier} Vulnerability
+                </text>
+                <text x="20" y="138" textAnchor="middle" fill="#666666" fontSize="11">0</text>
+                <text x="220" y="138" textAnchor="middle" fill="#666666" fontSize="11">100</text>
+            </svg>
             <p className={styles.gaugeLabel}>RVI Score — Structural Vulnerability</p>
         </div>
     );
 }
 
-
-
-
 export default function ExplorerPage({ districts }) {
-    const sorted = [...districts].sort((a, b) =>
-        a.district.localeCompare(b.district)
-    );
+    const sorted = [...districts].sort((a, b) => a.district.localeCompare(b.district));
     const [selected, setSelected] = useState(sorted[0]?.district || "");
+
+    useEffect(() => {
+        function handleSearch(e) {
+            const name = e.detail;
+            const found = districts.find(d => d.district.toLowerCase() === name.toLowerCase());
+            if (found) setSelected(found.district);
+        }
+        window.addEventListener("atlasSearch", handleSearch);
+        if (window.__atlasSearchDistrict) {
+            const found = districts.find(d => d.district.toLowerCase() === window.__atlasSearchDistrict.toLowerCase());
+            if (found) { setSelected(found.district); window.__atlasSearchDistrict = null; }
+        }
+        return () => window.removeEventListener("atlasSearch", handleSearch);
+    }, [districts]);
 
     const row = districts.find((d) => d.district === selected);
 
@@ -102,39 +95,24 @@ export default function ExplorerPage({ districts }) {
         { axis: "Literacy", district: norm(row?.literacy_rate_real, "literacy_rate_real"), national: norm(natAvg.literacy_rate_real, "literacy_rate_real") },
     ];
 
-    const top10RVI = [...districts]
-        .sort((a, b) => b.rvi_final_score - a.rvi_final_score)
-        .slice(0, 10);
+    const top10RVI = [...districts].sort((a, b) => b.rvi_final_score - a.rvi_final_score).slice(0, 10);
 
-    const diff = row
-        ? (row.absent_hh_rate - natAvg.absent_hh_rate).toFixed(1)
-        : 0;
+    const diff = row ? (row.absent_hh_rate - natAvg.absent_hh_rate).toFixed(1) : 0;
     const diffLabel = diff > 0 ? `+${diff}pp above` : `${diff}pp below`;
-
-    const rviDiff = row
-        ? (row.rvi_final_score - natAvg.rvi_final_score).toFixed(1)
-        : 0;
+    const rviDiff = row ? (row.rvi_final_score - natAvg.rvi_final_score).toFixed(1) : 0;
     const rviDiffLabel = rviDiff > 0 ? `+${rviDiff} above` : `${rviDiff} below`;
 
     return (
         <div className={styles.page}>
             <div className={styles.header}>
                 <h1 className={styles.title}>District Explorer</h1>
-                <p className={styles.sub}>
-                    Select any district to see both its Migration Dependency (RDI) and Structural Vulnerability (RVI)
-                </p>
+                <p className={styles.sub}>Select any district to see both its Migration Dependency (RDI) and Structural Vulnerability (RVI)</p>
             </div>
 
             <div className={styles.selectWrap}>
-                <select
-                    className={styles.select}
-                    value={selected}
-                    onChange={(e) => setSelected(e.target.value)}
-                >
+                <select className={styles.select} value={selected} onChange={(e) => setSelected(e.target.value)}>
                     {sorted.map((d) => (
-                        <option key={d.district} value={d.district}>
-                            {d.district}
-                        </option>
+                        <option key={d.district} value={d.district}>{d.district}</option>
                     ))}
                 </select>
             </div>
@@ -143,18 +121,8 @@ export default function ExplorerPage({ districts }) {
                 <>
                     <div className={styles.profileBar}>
                         <div className={styles.badgeRow}>
-                            <div
-                                className={styles.tierBadge}
-                                style={{ background: RDI_COLORS[row.rdi_tier] }}
-                            >
-                                RDI: {row.rdi_tier}
-                            </div>
-                            <div
-                                className={styles.tierBadge}
-                                style={{ background: RVI_COLORS[row.rvi_final_tier] }}
-                            >
-                                RVI: {row.rvi_final_tier}
-                            </div>
+                            <div className={styles.tierBadge} style={{ background: RDI_COLORS[row.rdi_tier] }}>RDI: {row.rdi_tier}</div>
+                            <div className={styles.tierBadge} style={{ background: RVI_COLORS[row.rvi_final_tier] }}>RVI: {row.rvi_final_tier}</div>
                         </div>
                         <h2 className={styles.districtName}>{row.district}</h2>
                         <p className={styles.provinceName}>{row.province} Province</p>
@@ -165,9 +133,7 @@ export default function ExplorerPage({ districts }) {
                             <div className={styles.sectionLabel}>Migration Dependency (RDI)</div>
                             <div className={styles.metricsRow}>
                                 <div className={styles.metricCard}>
-                                    <span className={styles.metricVal} style={{ color: RDI_COLORS[row.rdi_tier] }}>
-                                        {row.rdi_score.toFixed(1)}
-                                    </span>
+                                    <span className={styles.metricVal} style={{ color: RDI_COLORS[row.rdi_tier] }}>{row.rdi_score.toFixed(1)}</span>
                                     <span className={styles.metricKey}>RDI Score</span>
                                 </div>
                                 <div className={styles.metricCard}>
@@ -193,9 +159,7 @@ export default function ExplorerPage({ districts }) {
                             <div className={styles.sectionLabel} style={{ marginTop: 20 }}>Structural Vulnerability (RVI)</div>
                             <div className={styles.metricsRow}>
                                 <div className={styles.metricCard}>
-                                    <span className={styles.metricVal} style={{ color: RVI_COLORS[row.rvi_final_tier] }}>
-                                        {row.rvi_final_score.toFixed(1)}
-                                    </span>
+                                    <span className={styles.metricVal} style={{ color: RVI_COLORS[row.rvi_final_tier] }}>{row.rvi_final_score.toFixed(1)}</span>
                                     <span className={styles.metricKey}>RVI Score</span>
                                 </div>
                                 <div className={styles.metricCard}>
@@ -212,7 +176,7 @@ export default function ExplorerPage({ districts }) {
                                 </div>
                             </div>
 
-                            <div className={styles.insightBanner} style={{ borderColor: RVI_COLORS[row.rvi_final_tier] }}>
+                            <div className={styles.insightBanner} style={{ borderLeftColor: RVI_COLORS[row.rvi_final_tier] }}>
                                 <strong>{row.district}</strong> ranks <strong>#{row.rvi_final_rank}/75</strong> in structural vulnerability.{" "}
                                 RVI score of <strong>{row.rvi_final_score.toFixed(1)}</strong> is{" "}
                                 <strong>{rviDiffLabel}</strong> the national average of <strong>{natAvg.rvi_final_score.toFixed(1)}</strong>.
@@ -231,51 +195,23 @@ export default function ExplorerPage({ districts }) {
 
                         <div className={styles.rightCol}>
                             <RVIGauge score={row.rvi_final_score} tier={row.rvi_final_tier} />
-
                             <div className={styles.chartCard}>
                                 <h3 className={styles.chartTitle}>RDI Profile vs National Average</h3>
                                 <ResponsiveContainer width="100%" height={260}>
                                     <RadarChart data={radarData}>
-                                        <PolarGrid stroke="#2E3248" />
-                                        <PolarAngleAxis
-                                            dataKey="axis"
-                                            tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                        />
-                                        <Radar
-                                            name="National Avg"
-                                            dataKey="national"
-                                            stroke="#4ECDC4"
-                                            fill="#4ECDC4"
-                                            fillOpacity={0.1}
-                                            strokeDasharray="4 4"
-                                            strokeWidth={2}
-                                        />
-                                        <Radar
-                                            name={row.district}
-                                            dataKey="district"
-                                            stroke="#E8C547"
-                                            fill="#E8C547"
-                                            fillOpacity={0.2}
-                                            strokeWidth={2}
-                                        />
-                                        <Tooltip
-                                            contentStyle={{
-                                                background: "#1A1D27",
-                                                border: "1px solid #2E3248",
-                                                borderRadius: 8,
-                                                color: "#F0F0F0",
-                                            }}
-                                        />
+                                        <PolarGrid stroke="#e0e0e0" />
+                                        <PolarAngleAxis dataKey="axis" tick={{ fill: "#333333", fontSize: 11 }} />
+                                        <Radar name="National Avg" dataKey="national" stroke="#4ECDC4" fill="#4ECDC4" fillOpacity={0.1} strokeDasharray="4 4" strokeWidth={2} />
+                                        <Radar name={row.district} dataKey="district" stroke="#ef4444" fill="#ef4444" fillOpacity={0.2} strokeWidth={2} />
+                                        <Tooltip contentStyle={{ background: "#ffffff", border: "1.6px solid #e0e0e0", borderRadius: 8, color: "#000000" }} />
                                     </RadarChart>
                                 </ResponsiveContainer>
                                 <div className={styles.radarLegend}>
                                     <span className={styles.legendItem}>
-                                        <span className={styles.legendLine} style={{ background: "#E8C547" }} />
-                                        {row.district}
+                                        <span className={styles.legendLine} style={{ background: "#ef4444" }} />{row.district}
                                     </span>
                                     <span className={styles.legendItem}>
-                                        <span className={styles.legendLine} style={{ background: "#4ECDC4", opacity: 0.6 }} />
-                                        National Average
+                                        <span className={styles.legendLine} style={{ background: "#4ECDC4" }} />National Average
                                     </span>
                                 </div>
                             </div>
@@ -285,44 +221,13 @@ export default function ExplorerPage({ districts }) {
                     <div className={styles.chartCardFull}>
                         <h3 className={styles.chartTitle}>Top 10 Most Structurally Vulnerable Districts (RVI)</h3>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart
-                                data={top10RVI}
-                                layout="vertical"
-                                margin={{ left: 16, right: 32, top: 8, bottom: 8 }}
-                            >
-                                <XAxis
-                                    type="number"
-                                    tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                    axisLine={{ stroke: "#2E3248" }}
-                                    tickLine={false}
-                                />
-                                <YAxis
-                                    type="category"
-                                    dataKey="district"
-                                    tick={{ fill: "#F0F0F0", fontSize: 12 }}
-                                    axisLine={false}
-                                    tickLine={false}
-                                    width={80}
-                                />
-                                <Tooltip
-                                    contentStyle={{
-                                        background: "#1A1D27",
-                                        border: "1px solid #2E3248",
-                                        borderRadius: 8,
-                                        color: "#F0F0F0",
-                                    }}
-                                    formatter={(v) => [v.toFixed(1), "RVI Score"]}
-                                />
+                            <BarChart data={top10RVI} layout="vertical" margin={{ left: 16, right: 32, top: 8, bottom: 8 }}>
+                                <XAxis type="number" tick={{ fill: "#666666", fontSize: 11 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} domain={[0, 100]} />
+                                <YAxis type="category" dataKey="district" tick={{ fill: "#000000", fontSize: 12 }} axisLine={false} tickLine={false} width={80} />
+                                <Tooltip contentStyle={{ background: "#ffffff", border: "1.6px solid #e0e0e0", borderRadius: 8, color: "#000000" }} formatter={(v) => [v.toFixed(1), "RVI Score"]} />
                                 <Bar dataKey="rvi_final_score" radius={[0, 6, 6, 0]}>
                                     {top10RVI.map((d) => (
-                                        <Cell
-                                            key={d.district}
-                                            fill={
-                                                d.district === selected
-                                                    ? "#E8C547"
-                                                    : RVI_COLORS[d.rvi_final_tier]
-                                            }
-                                        />
+                                        <Cell key={d.district} fill={d.district === selected ? "#ef4444" : RVI_COLORS[d.rvi_final_tier]} />
                                     ))}
                                 </Bar>
                             </BarChart>

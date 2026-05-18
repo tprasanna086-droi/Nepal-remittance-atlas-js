@@ -1,16 +1,6 @@
 import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer,
-    CartesianGrid,
-    AreaChart,
-    Area,
-    BarChart,
-    Bar,
-    Cell,
+    XAxis, YAxis, Tooltip, ResponsiveContainer,
+    CartesianGrid, AreaChart, Area, BarChart, Bar,
 } from "recharts";
 import styles from "./MigrationPage.module.css";
 
@@ -33,27 +23,29 @@ const remittanceTimeSeries = [
 ];
 
 const destinationData = [
-    { country: "UAE", workers: 201148, color: "#E8C547" },
+    { country: "UAE", workers: 201148, color: "#ef4444" },
     { country: "Qatar", workers: 98432, color: "#4ECDC4" },
     { country: "Saudi Arabia", workers: 87654, color: "#A78BFA" },
     { country: "Kuwait", workers: 34521, color: "#F97316" },
     { country: "Japan", workers: 18744, color: "#34D399" },
     { country: "Romania", workers: 22373, color: "#F472B6" },
-    { country: "Malaysia", workers: 10200, color: "#8A8FA8" },
+    { country: "Malaysia", workers: 10200, color: "#888888" },
 ];
+
+const tooltipStyle = {
+    background: "#ffffff",
+    border: "1.6px solid #e0e0e0",
+    borderRadius: 8,
+    color: "#000000",
+};
 
 const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
     return (
-        <div style={{
-            background: "#1A1D27",
-            border: "1px solid #2E3248",
-            borderRadius: 8,
-            padding: "10px 14px",
-        }}>
-            <p style={{ fontWeight: 700, marginBottom: 6, color: "#F0F0F0" }}>{label}</p>
+        <div style={{ ...tooltipStyle, padding: "10px 14px" }}>
+            <p style={{ fontWeight: 700, marginBottom: 6, color: "#000000" }}>{label}</p>
             {payload.map((p) => (
-                <p key={p.name} style={{ fontSize: 12, color: p.color }}>
+                <p key={p.name} style={{ fontSize: 12, color: "#666666" }}>
                     {p.name}: {typeof p.value === "number" ? p.value.toLocaleString() : p.value}
                 </p>
             ))}
@@ -63,7 +55,6 @@ const CustomTooltip = ({ active, payload, label }) => {
 
 export default function MigrationPage({ districts }) {
     const totalAbsent = districts.reduce((s, d) => s + d.absent_population, 0);
-    const avgMig = (districts.reduce((s, d) => s + d.absent_hh_rate, 0) / districts.length).toFixed(1);
     const latestRemittance = remittanceTimeSeries[remittanceTimeSeries.length - 1];
     const growthRate = (
         ((latestRemittance.remittance_npr - remittanceTimeSeries[remittanceTimeSeries.length - 2].remittance_npr) /
@@ -74,9 +65,7 @@ export default function MigrationPage({ districts }) {
         <div className={styles.page}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Migration Patterns</h1>
-                <p className={styles.sub}>
-                    15-year trend of remittance inflows and labour migration from Nepal
-                </p>
+                <p className={styles.sub}>15-year trend of remittance inflows and labour migration from Nepal</p>
             </div>
 
             <div className={styles.statsStrip}>
@@ -100,43 +89,20 @@ export default function MigrationPage({ districts }) {
 
             <div className={styles.chartCard}>
                 <h3 className={styles.chartTitle}>Remittance Inflows 2010–2025 (NPR Billion)</h3>
-                <p className={styles.chartSub}>
-                    Sharp dip in 2020/21 due to COVID-19 — followed by record recovery
-                </p>
+                <p className={styles.chartSub}>Sharp dip in 2020/21 due to COVID-19 — followed by record recovery</p>
                 <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart
-                        data={remittanceTimeSeries}
-                        margin={{ left: 10, right: 20, top: 8, bottom: 8 }}
-                    >
+                    <AreaChart data={remittanceTimeSeries} margin={{ left: 10, right: 20, top: 8, bottom: 8 }}>
                         <defs>
                             <linearGradient id="remGrad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#E8C547" stopOpacity={0.3} />
-                                <stop offset="95%" stopColor="#E8C547" stopOpacity={0} />
+                                <stop offset="5%" stopColor="#ef4444" stopOpacity={0.2} />
+                                <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                             </linearGradient>
                         </defs>
-                        <CartesianGrid stroke="#2E3248" strokeDasharray="3 3" vertical={false} />
-                        <XAxis
-                            dataKey="year"
-                            tick={{ fill: "#8A8FA8", fontSize: 10 }}
-                            axisLine={{ stroke: "#2E3248" }}
-                            tickLine={false}
-                        />
-                        <YAxis
-                            tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                            axisLine={false}
-                            tickLine={false}
-                        />
+                        <CartesianGrid stroke="#e0e0e0" strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="year" tick={{ fill: "#666666", fontSize: 10 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} />
+                        <YAxis tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false} />
                         <Tooltip content={<CustomTooltip />} />
-                        <Area
-                            type="monotone"
-                            dataKey="remittance_npr"
-                            name="NPR Billion"
-                            stroke="#E8C547"
-                            strokeWidth={2.5}
-                            fill="url(#remGrad)"
-                            dot={{ fill: "#E8C547", r: 3 }}
-                            activeDot={{ r: 6 }}
-                        />
+                        <Area type="monotone" dataKey="remittance_npr" name="NPR Billion" stroke="#ef4444" strokeWidth={2.5} fill="url(#remGrad)" dot={{ fill: "#ef4444", r: 3 }} activeDot={{ r: 6 }} />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
@@ -146,31 +112,12 @@ export default function MigrationPage({ districts }) {
                     <h3 className={styles.chartTitle}>Labour Permits Issued Per Year</h3>
                     <p className={styles.chartSub}>First-time approvals for foreign employment</p>
                     <ResponsiveContainer width="100%" height={260}>
-                        <BarChart
-                            data={remittanceTimeSeries}
-                            margin={{ left: 10, right: 20, top: 8, bottom: 8 }}
-                        >
-                            <CartesianGrid stroke="#2E3248" strokeDasharray="3 3" vertical={false} />
-                            <XAxis
-                                dataKey="year"
-                                tick={{ fill: "#8A8FA8", fontSize: 9 }}
-                                axisLine={{ stroke: "#2E3248" }}
-                                tickLine={false}
-                            />
-                            <YAxis
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={false}
-                                tickLine={false}
-                                tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`}
-                            />
+                        <BarChart data={remittanceTimeSeries} margin={{ left: 10, right: 20, top: 8, bottom: 8 }}>
+                            <CartesianGrid stroke="#e0e0e0" strokeDasharray="3 3" vertical={false} />
+                            <XAxis dataKey="year" tick={{ fill: "#666666", fontSize: 9 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} />
+                            <YAxis tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={(v) => `${(v / 1000).toFixed(0)}k`} />
                             <Tooltip content={<CustomTooltip />} />
-                            <Bar
-                                dataKey="workers"
-                                name="Workers"
-                                fill="#4ECDC4"
-                                fillOpacity={0.8}
-                                radius={[4, 4, 0, 0]}
-                            />
+                            <Bar dataKey="workers" name="Workers" fill="#000000" fillOpacity={0.8} radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -184,17 +131,9 @@ export default function MigrationPage({ districts }) {
                                 <span className={styles.destRank}>#{i + 1}</span>
                                 <span className={styles.destName}>{d.country}</span>
                                 <div className={styles.destBarWrap}>
-                                    <div
-                                        className={styles.destBar}
-                                        style={{
-                                            width: `${(d.workers / destinationData[0].workers) * 100}%`,
-                                            background: d.color,
-                                        }}
-                                    />
+                                    <div className={styles.destBar} style={{ width: `${(d.workers / destinationData[0].workers) * 100}%`, background: d.color }} />
                                 </div>
-                                <span className={styles.destNum}>
-                                    {(d.workers / 1000).toFixed(0)}k
-                                </span>
+                                <span className={styles.destNum}>{(d.workers / 1000).toFixed(0)}k</span>
                             </div>
                         ))}
                     </div>
@@ -208,43 +147,28 @@ export default function MigrationPage({ districts }) {
                         <span className={styles.insightIcon}>📈</span>
                         <div>
                             <p className={styles.insightHead}>Consistent Growth</p>
-                            <p className={styles.insightBody}>
-                                Remittances grew from Rs.253B in 2010/11 to Rs.1,723B in 2024/25 —
-                                a 6.8x increase over 15 years despite COVID disruption.
-                            </p>
+                            <p className={styles.insightBody}>Remittances grew from Rs.253B in 2010/11 to Rs.1,723B in 2024/25 — a 6.8x increase over 15 years despite COVID disruption.</p>
                         </div>
                     </div>
                     <div className={styles.insightItem}>
                         <span className={styles.insightIcon}>🌍</span>
                         <div>
                             <p className={styles.insightHead}>Gulf Dependence</p>
-                            <p className={styles.insightBody}>
-                                Qatar, UAE, and Saudi Arabia account for over 60% of all
-                                Nepali migrant workers — creating significant geopolitical
-                                vulnerability.
-                            </p>
+                            <p className={styles.insightBody}>Qatar, UAE, and Saudi Arabia account for over 60% of all Nepali migrant workers — creating significant geopolitical vulnerability.</p>
                         </div>
                     </div>
                     <div className={styles.insightItem}>
                         <span className={styles.insightIcon}>🏘️</span>
                         <div>
                             <p className={styles.insightHead}>District Inequality</p>
-                            <p className={styles.insightBody}>
-                                Migration is not evenly distributed — Far-West hill districts
-                                send proportionally far more workers than Kathmandu Valley
-                                districts.
-                            </p>
+                            <p className={styles.insightBody}>Migration is not evenly distributed — Far-West hill districts send proportionally far more workers than Kathmandu Valley districts.</p>
                         </div>
                     </div>
                     <div className={styles.insightItem}>
                         <span className={styles.insightIcon}>💡</span>
                         <div>
                             <p className={styles.insightHead}>No Education Link</p>
-                            <p className={styles.insightBody}>
-                                Correlation between migration rate and education level is
-                                near zero (r=0.005) — both are driven by geographic and
-                                economic marginalization.
-                            </p>
+                            <p className={styles.insightBody}>Correlation between migration rate and education level is near zero (r=0.005) — both are driven by geographic and economic marginalization.</p>
                         </div>
                     </div>
                 </div>

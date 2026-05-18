@@ -42,7 +42,7 @@ export default function AtlasPage({ districts, geojson }) {
             });
 
             L.tileLayer(
-                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
                 {
                     attribution: "© CartoDB",
                     subdomains: "abcd",

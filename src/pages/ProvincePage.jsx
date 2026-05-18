@@ -1,14 +1,6 @@
 import {
-    BarChart,
-    Bar,
-    XAxis,
-    YAxis,
-    Tooltip,
-    ResponsiveContainer,
-    Cell,
-    ScatterChart,
-    Scatter,
-    ZAxis,
+    BarChart, Bar, XAxis, YAxis, Tooltip,
+    ResponsiveContainer, Cell, ScatterChart, Scatter, ZAxis,
 } from "recharts";
 import styles from "./ProvincePage.module.css";
 
@@ -20,6 +12,13 @@ const PROVINCE_COLORS = {
     Lumbini: "#F97316",
     Karnali: "#34D399",
     Sudurpashchim: "#F472B6",
+};
+
+const tooltipStyle = {
+    background: "#ffffff",
+    border: "1.6px solid #e0e0e0",
+    borderRadius: 8,
+    color: "#000000",
 };
 
 export default function ProvincePage({ districts }) {
@@ -36,7 +35,6 @@ export default function ProvincePage({ districts }) {
             avgRVI: ds.reduce((s, d) => s + d.rvi_final_score, 0) / ds.length,
             totalAbsent: ds.reduce((s, d) => s + d.absent_population, 0),
             districtCount: ds.length,
-            districts: ds,
         };
     });
 
@@ -52,23 +50,14 @@ export default function ProvincePage({ districts }) {
         <div className={styles.page}>
             <div className={styles.header}>
                 <h1 className={styles.title}>Provincial Analysis</h1>
-                <p className={styles.sub}>
-                    How remittance dependency varies across Nepal's 7 provinces
-                </p>
+                <p className={styles.sub}>How remittance dependency varies across Nepal's 7 provinces</p>
             </div>
 
             <div className={styles.provinceGrid}>
                 {provinceStats.map((p) => (
-                    <div
-                        key={p.province}
-                        className={styles.provinceCard}
-                        style={{ borderTop: `3px solid ${PROVINCE_COLORS[p.province] || "#888"}` }}
-                    >
+                    <div key={p.province} className={styles.provinceCard} style={{ borderTop: `3px solid ${PROVINCE_COLORS[p.province] || "#888"}` }}>
                         <div className={styles.provinceHeader}>
-                            <span
-                                className={styles.provinceDot}
-                                style={{ background: PROVINCE_COLORS[p.province] || "#888" }}
-                            />
+                            <span className={styles.provinceDot} style={{ background: PROVINCE_COLORS[p.province] || "#888" }} />
                             <h3 className={styles.provinceName}>{p.province}</h3>
                         </div>
                         <div className={styles.provinceStat}>
@@ -91,36 +80,13 @@ export default function ProvincePage({ districts }) {
                 <div className={styles.chartCard}>
                     <h3 className={styles.chartTitle}>Average RDI Score by Province</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart
-                            data={provinceStats}
-                            margin={{ left: 0, right: 20, top: 8, bottom: 8 }}
-                        >
-                            <XAxis
-                                dataKey="province"
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={{ stroke: "#2E3248" }}
-                                tickLine={false}
-                            />
-                            <YAxis
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={false}
-                                tickLine={false}
-                            />
-                            <Tooltip
-                                contentStyle={{
-                                    background: "#1A1D27",
-                                    border: "1px solid #2E3248",
-                                    borderRadius: 8,
-                                    color: "#F0F0F0",
-                                }}
-                                formatter={(v) => [v.toFixed(1), "Avg RDI"]}
-                            />
+                        <BarChart data={provinceStats} margin={{ left: 0, right: 20, top: 8, bottom: 8 }}>
+                            <XAxis dataKey="province" tick={{ fill: "#666666", fontSize: 11 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} />
+                            <YAxis tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={tooltipStyle} formatter={(v) => [v.toFixed(1), "Avg RDI"]} />
                             <Bar dataKey="avgRDI" radius={[6, 6, 0, 0]}>
                                 {provinceStats.map((p) => (
-                                    <Cell
-                                        key={p.province}
-                                        fill={PROVINCE_COLORS[p.province] || "#888"}
-                                    />
+                                    <Cell key={p.province} fill={PROVINCE_COLORS[p.province] || "#888"} />
                                 ))}
                             </Bar>
                         </BarChart>
@@ -130,74 +96,29 @@ export default function ProvincePage({ districts }) {
                 <div className={styles.chartCard}>
                     <h3 className={styles.chartTitle}>Average Household Migration % by Province</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart
-                            data={provinceStats}
-                            margin={{ left: 0, right: 20, top: 8, bottom: 8 }}
-                        >
-                            <XAxis
-                                dataKey="province"
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={{ stroke: "#2E3248" }}
-                                tickLine={false}
-                            />
-                            <YAxis
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={false}
-                                tickLine={false}
-                            />
-                            <Tooltip
-                                contentStyle={{
-                                    background: "#1A1D27",
-                                    border: "1px solid #2E3248",
-                                    borderRadius: 8,
-                                    color: "#F0F0F0",
-                                }}
-                                formatter={(v) => [v.toFixed(1) + "%", "Avg Migration"]}
-                            />
+                        <BarChart data={provinceStats} margin={{ left: 0, right: 20, top: 8, bottom: 8 }}>
+                            <XAxis dataKey="province" tick={{ fill: "#666666", fontSize: 11 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} />
+                            <YAxis tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={tooltipStyle} formatter={(v) => [v.toFixed(1) + "%", "Avg Migration"]} />
                             <Bar dataKey="avgMig" radius={[6, 6, 0, 0]}>
                                 {provinceStats.map((p) => (
-                                    <Cell
-                                        key={p.province}
-                                        fill={PROVINCE_COLORS[p.province] || "#888"}
-                                    />
+                                    <Cell key={p.province} fill={PROVINCE_COLORS[p.province] || "#888"} />
                                 ))}
                             </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
+
                 <div className={styles.chartCard}>
                     <h3 className={styles.chartTitle}>Average RVI Score by Province</h3>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart
-                            data={provinceStats}
-                            margin={{ left: 0, right: 20, top: 8, bottom: 8 }}
-                        >
-                            <XAxis
-                                dataKey="province"
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={{ stroke: "#2E3248" }}
-                                tickLine={false}
-                            />
-                            <YAxis
-                                tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                                axisLine={false}
-                                tickLine={false}
-                            />
-                            <Tooltip
-                                contentStyle={{
-                                    background: "#1A1D27",
-                                    border: "1px solid #2E3248",
-                                    borderRadius: 8,
-                                    color: "#F0F0F0",
-                                }}
-                                formatter={(v) => [v.toFixed(1), "Avg RVI"]}
-                            />
+                        <BarChart data={provinceStats} margin={{ left: 0, right: 20, top: 8, bottom: 8 }}>
+                            <XAxis dataKey="province" tick={{ fill: "#666666", fontSize: 11 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false} />
+                            <YAxis tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false} />
+                            <Tooltip contentStyle={tooltipStyle} formatter={(v) => [v.toFixed(1), "Avg RVI"]} />
                             <Bar dataKey="avgRVI" radius={[6, 6, 0, 0]}>
                                 {provinceStats.map((p) => (
-                                    <Cell
-                                        key={p.province}
-                                        fill={PROVINCE_COLORS[p.province] || "#888"}
-                                    />
+                                    <Cell key={p.province} fill={PROVINCE_COLORS[p.province] || "#888"} />
                                 ))}
                             </Bar>
                         </BarChart>
@@ -206,76 +127,28 @@ export default function ProvincePage({ districts }) {
             </div>
 
             <div className={styles.chartCardFull}>
-                <h3 className={styles.chartTitle}>
-                    Migration Rate vs Education Level — All 75 Districts
-                </h3>
-                <p className={styles.chartSub}>
-                    Bubble size = RDI Score · No significant correlation found (r = 0.005)
-                </p>
+                <h3 className={styles.chartTitle}>Migration Rate vs Education Level — All 75 Districts</h3>
+                <p className={styles.chartSub}>Bubble size = RDI Score · No significant correlation found (r = 0.005)</p>
                 <ResponsiveContainer width="100%" height={380}>
                     <ScatterChart margin={{ left: 20, right: 20, top: 8, bottom: 20 }}>
-                        <XAxis
-                            type="number"
-                            dataKey="x"
-                            name="HH Migration %"
-                            tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                            axisLine={{ stroke: "#2E3248" }}
-                            tickLine={false}
-                            label={{
-                                value: "Household Migration Rate (%)",
-                                position: "insideBottom",
-                                offset: -10,
-                                fill: "#8A8FA8",
-                                fontSize: 12,
-                            }}
-                        />
-                        <YAxis
-                            type="number"
-                            dataKey="y"
-                            name="Education %"
-                            tick={{ fill: "#8A8FA8", fontSize: 11 }}
-                            axisLine={false}
-                            tickLine={false}
-                            label={{
-                                value: "Secondary Education (%)",
-                                angle: -90,
-                                position: "insideLeft",
-                                fill: "#8A8FA8",
-                                fontSize: 12,
-                            }}
-                        />
+                        <XAxis type="number" dataKey="x" name="HH Migration %" tick={{ fill: "#666666", fontSize: 11 }} axisLine={{ stroke: "#e0e0e0" }} tickLine={false}
+                            label={{ value: "Household Migration Rate (%)", position: "insideBottom", offset: -10, fill: "#666666", fontSize: 12 }} />
+                        <YAxis type="number" dataKey="y" name="Education %" tick={{ fill: "#666666", fontSize: 11 }} axisLine={false} tickLine={false}
+                            label={{ value: "Secondary Education (%)", angle: -90, position: "insideLeft", fill: "#666666", fontSize: 12 }} />
                         <ZAxis type="number" dataKey="z" range={[40, 200]} />
-                        <Tooltip
-                            contentStyle={{
-                                background: "#1A1D27",
-                                border: "1px solid #2E3248",
-                                borderRadius: 8,
-                                color: "#F0F0F0",
-                            }}
-                            content={({ payload }) => {
-                                if (!payload?.length) return null;
-                                const d = payload[0].payload;
-                                return (
-                                    <div style={{ padding: "10px 14px" }}>
-                                        <p style={{ fontWeight: 700, marginBottom: 4 }}>{d.name}</p>
-                                        <p style={{ fontSize: 12, color: "#8A8FA8" }}>
-                                            Migration: {d.x.toFixed(1)}%
-                                        </p>
-                                        <p style={{ fontSize: 12, color: "#8A8FA8" }}>
-                                            Education: {d.y.toFixed(1)}%
-                                        </p>
-                                        <p style={{ fontSize: 12, color: "#E8C547" }}>
-                                            RDI: {d.z.toFixed(1)}
-                                        </p>
-                                    </div>
-                                );
-                            }}
-                        />
-                        <Scatter
-                            data={scatterData}
-                            fill="#E8C547"
-                            fillOpacity={0.7}
-                        />
+                        <Tooltip contentStyle={tooltipStyle} content={({ payload }) => {
+                            if (!payload?.length) return null;
+                            const d = payload[0].payload;
+                            return (
+                                <div style={{ padding: "10px 14px", background: "#ffffff", border: "1.6px solid #e0e0e0", borderRadius: 8 }}>
+                                    <p style={{ fontWeight: 700, marginBottom: 4, color: "#000000" }}>{d.name}</p>
+                                    <p style={{ fontSize: 12, color: "#666666" }}>Migration: {d.x.toFixed(1)}%</p>
+                                    <p style={{ fontSize: 12, color: "#666666" }}>Education: {d.y.toFixed(1)}%</p>
+                                    <p style={{ fontSize: 12, color: "#ef4444" }}>RDI: {d.z.toFixed(1)}</p>
+                                </div>
+                            );
+                        }} />
+                        <Scatter data={scatterData} fill="#ef4444" fillOpacity={0.7} />
                     </ScatterChart>
                 </ResponsiveContainer>
             </div>

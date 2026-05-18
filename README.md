@@ -18,6 +18,12 @@ Most data dashboards display one index. This atlas displays two — and shows th
 Toggle between RDI (Migration Dependency Index) and RVI (Remittance Vulnerability Index) on the same choropleth map and watch Nepal's vulnerability story change completely. The near-zero Spearman correlation (r = 0.049, p > 0.05) between the two indices is the central research finding — made visible in one click.
 
 ---
+## Screenshots
+
+![Home Page](screenshots/home.png)
+![Atlas Map](screenshots/atlas.png)
+![District Explorer](screenshots/explorer.png)
+![Research Page](screenshots/research.png)
 
 ## Pages
 

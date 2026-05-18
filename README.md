@@ -1,9 +1,11 @@
+
+
 # 🗺️ Nepal Remittance Vulnerability Atlas
 
 ![Next.js](https://img.shields.io/badge/Next.js-15-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-blue)
 ![Vercel](https://img.shields.io/badge/Deployed-Vercel-black)
-![License](https://img.shields.io/badge/License-MIT-green)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 > **Live App:** https://nepal-remittance-atlas-js.vercel.app/
 

@@ -152,7 +152,7 @@ export default function HomePage({ setPage }) {
                         </div>
                     </div>
                     <div className={styles.footerBottom}>
-                        <p className={styles.footerCopy}>© 2026 Nepal Remittance Atlas. All rights reserved.</p>
+                        <p className={styles.footerCopy}>© 2026 Prasanna Thapa · Nepal Remittance Atlas. All rights reserved.</p>
                         <a href="https://github.com/tprasanna086-droi/Nepal-remittance-atlas-js" target="_blank" rel="noreferrer" className={styles.footerGithub}>View on GitHub →</a>
                     </div>
                 </div>
